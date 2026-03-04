@@ -138,6 +138,64 @@
       color: var(--muted);
       font-size: 0.9rem;
     }
+    .treatment {
+      margin-top: 1rem;
+      border: 1px solid var(--line);
+      background: var(--paper);
+      border-radius: 14px;
+      padding: 0.95rem;
+      box-shadow: 0 6px 18px rgba(10, 10, 10, 0.03);
+    }
+    .treatment h2 {
+      margin: 0 0 0.35rem;
+      font-size: 1rem;
+    }
+    .treatment-sub {
+      margin: 0 0 0.7rem;
+      color: var(--muted);
+      font-size: 0.84rem;
+    }
+    .treatment-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.86rem;
+    }
+    .treatment-table th,
+    .treatment-table td {
+      border-bottom: 1px dashed var(--line);
+      text-align: left;
+      padding: 0.45rem 0.3rem;
+      vertical-align: top;
+    }
+    .treatment-table th {
+      color: #3d3d3a;
+      font-weight: 600;
+      font-size: 0.78rem;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+    .treatment-meta {
+      margin-top: 0.65rem;
+      font-size: 0.81rem;
+      color: #44443f;
+      display: grid;
+      gap: 0.25rem;
+    }
+    .btn-row {
+      margin-top: 0.75rem;
+      display: flex;
+      justify-content: flex-start;
+    }
+    .btn-pdf {
+      text-decoration: none;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 0.42rem 0.82rem;
+      font-size: 0.82rem;
+      background: #efece3;
+      color: #1e1e1e;
+      font-weight: 600;
+    }
 
     .cards {
       margin-top: 1rem;
@@ -302,6 +360,53 @@
       <div class="summary" id="summary"></div>
     </div>
 
+    <section class="treatment" aria-label="Registro de prescrição">
+      <h2>Registro de Prescrição e Aplicações (Clínica)</h2>
+      <p class="treatment-sub">Resumo administrativo informado na clínica, para controle pessoal.</p>
+      <table class="treatment-table">
+        <thead>
+          <tr>
+            <th>Item informado</th>
+            <th>Valor</th>
+            <th>Regime</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Redutor de homocisteína</td>
+            <td>R$ 150,00</td>
+            <td>Aplicado na clínica</td>
+          </tr>
+          <tr>
+            <td>B12</td>
+            <td>R$ 160,00</td>
+            <td>Aplicado na clínica</td>
+          </tr>
+          <tr>
+            <td>Ácido alfa-lipoico (x2)</td>
+            <td>R$ 250,00 cada</td>
+            <td>2 aplicações</td>
+          </tr>
+          <tr>
+            <td>Testosterona de longa duração</td>
+            <td>R$ 680,00 cada</td>
+            <td>1 dose a cada 6 semanas, total 4 doses (6 meses)</td>
+          </tr>
+          <tr>
+            <td>Tirzepatida 10 UI</td>
+            <td>R$ 3.300,00</td>
+            <td>Injeção abdominal 1x/semana por 4 meses</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="treatment-meta">
+        <div><strong>Status:</strong> itens relatados como pagos e iniciados na própria clínica.</div>
+        <div><strong>Observação:</strong> confirmar na secretaria o descritivo técnico completo (princípio ativo, concentração, lote e posologia formal).</div>
+      </div>
+      <div class="btn-row">
+        <a class="btn-pdf" href="./receita-clinica.pdf" target="_blank" rel="noopener">Abrir PDF da Receita</a>
+      </div>
+    </section>
     <main class="cards" id="cards"></main>
 
     <p class="footnote">Painel de apoio visual para leitura dos laudos laboratoriais. Não substitui avaliação médica.</p>

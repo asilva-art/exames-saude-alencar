@@ -1,0 +1,10 @@
+# Keep repo focused on the published site
+*.pdf
+*.PDF
+*.jpg
+*.jpeg
+*.JPG
+*.JPEG
+*.png
+*.PNG
+.DS_Store

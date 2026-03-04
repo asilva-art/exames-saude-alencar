@@ -21,7 +21,7 @@ window.EXAMS_DATA = {
       "Telefone Geral/Atend.Domiciliar: 4004-7808",
       "Telefone: 4004-7807"
     ],
-    "generatedAt": "03/03/2026 14:56"
+    "generatedAt": "04/03/2026 20:33"
   },
   "exams": [
     {
@@ -973,14 +973,14 @@ window.EXAMS_DATA = {
     {
       "name": "HEMOGLOBINA GLICADA (A1C)",
       "collectedAt": "23/01/2026 10:07",
-      "resultText": "HEMOGLOBINA GLICADA (A1C): 5,4%; Glicemia média estimada: 109,4 mg/dL",
+      "resultText": "HEMOGLOBINA GLICADA (A1C): 5,4%",
       "referenceText": "MENOR QUE 5,7% DIABETES MELLITUS: PRÉ-DIABETES: DE 5,7 A 6,4% DIAGNÓSTICO : IGUAL OU MAIOR QUE 6,5% BOM CONTROLE: MENOR QUE 7%",
       "refMin": 5.7,
       "refMax": 6.4,
       "history": [
         {
           "date": "23/01/2026 10:07",
-          "valueText": "HEMOGLOBINA GLICADA (A1C): 5,4%; Glicemia média estimada: 109,4 mg/dL",
+          "valueText": "HEMOGLOBINA GLICADA (A1C): 5,4%",
           "value": 1.0,
           "unit": "C",
           "reference": "5,7 a 6,4"

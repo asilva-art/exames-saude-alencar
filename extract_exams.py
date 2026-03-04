@@ -138,10 +138,6 @@ def build_payload(pdf_path: Path):
         else:
             rm = re.search(r"\nRESULTADOS?:\s*([^\n]+)", "\n" + seg)
             result = clean(rm.group(1)) if rm else ""
-            if normalize_name(title) == "HEMOGLOBINA GLICADA (A1C)":
-                gm = re.search(r"GLICEMIA M[ÉE]DIA ESTIMADA[\s\S]*?RESULTADO:\s*([^\n]+)", seg)
-                if gm:
-                    result = f"{result}; Glicemia média estimada: {clean(gm.group(1))}"
 
         rfm = re.search(r"VALOR(?:ES)? DE REFER[ÊE]NCIA:?([\s\S]*?)(?=\n(?:NOTA|NOTAS|Atenção|Este laudo|RESULTADOS ANTERIORES|CNES:|GLICEMIA M[ÉE]DIA ESTIMADA|$))", seg, re.I)
         ref = clean(rfm.group(1)) if rfm else ""

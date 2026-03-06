@@ -1,0 +1,651 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Painel de Exames - Alencar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f4f3ef;
+      --paper: #fffefa;
+      --ink: #111111;
+      --muted: #6a6964;
+      --line: #d9d4c8;
+      --ok: #2f855a;
+      --warn: #b7791f;
+      --bad: #b8322b;
+      --accent: #126782;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Space Grotesk", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(80rem 35rem at 20% -10%, #e8ecef 10%, transparent 70%),
+        radial-gradient(80rem 30rem at 100% 0%, #f0eee7 10%, transparent 70%),
+        var(--bg);
+    }
+
+    .container {
+      width: min(1120px, 92vw);
+      margin: 1.4rem auto 3rem;
+    }
+
+    .hero {
+      border: 1px solid var(--line);
+      background: var(--paper);
+      border-radius: 18px;
+      padding: 1rem 1.2rem;
+      box-shadow: 0 10px 24px rgba(17, 17, 17, 0.04);
+    }
+
+    .hero-top {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 1rem;
+      border-bottom: 1px dashed var(--line);
+      padding-bottom: 0.8rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .label {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      margin-bottom: 0.2rem;
+    }
+
+    .name {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: clamp(1.25rem, 3.3vw, 2rem);
+      line-height: 1.1;
+      font-weight: 500;
+    }
+
+    .meta {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.95rem;
+      color: #232323;
+    }
+
+    .hero-bottom {
+      display: grid;
+      gap: 0.7rem;
+      grid-template-columns: 2fr 1fr;
+    }
+
+    .stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-top: 0.4rem;
+    }
+
+    .pill {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 0.24rem 0.62rem;
+      font-size: 0.79rem;
+      color: #2d2d2d;
+      background: #f7f6f0;
+    }
+
+    .toolbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      padding: 0.8rem 0;
+      backdrop-filter: blur(4px);
+    }
+
+    .search-wrap {
+      display: flex;
+      gap: 0.6rem;
+      border: 1px solid var(--line);
+      background: var(--paper);
+      border-radius: 999px;
+      padding: 0.38rem 0.5rem 0.38rem 0.85rem;
+      box-shadow: 0 8px 18px rgba(17, 17, 17, 0.05);
+    }
+
+    #search {
+      width: 100%;
+      border: 0;
+      outline: none;
+      font: inherit;
+      background: transparent;
+      color: var(--ink);
+    }
+
+    #clearBtn {
+      border: 0;
+      border-radius: 999px;
+      padding: 0.35rem 0.65rem;
+      font: inherit;
+      background: #ece8dc;
+      cursor: pointer;
+    }
+
+    .summary {
+      margin-top: 0.6rem;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+    .treatment {
+      margin-top: 1rem;
+      border: 1px solid var(--line);
+      background: var(--paper);
+      border-radius: 14px;
+      padding: 0.95rem;
+      box-shadow: 0 6px 18px rgba(10, 10, 10, 0.03);
+    }
+    .treatment h2 {
+      margin: 0 0 0.35rem;
+      font-size: 1rem;
+    }
+    .treatment-sub {
+      margin: 0 0 0.7rem;
+      color: var(--muted);
+      font-size: 0.84rem;
+    }
+    .treatment-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.86rem;
+    }
+    .treatment-table th,
+    .treatment-table td {
+      border-bottom: 1px dashed var(--line);
+      text-align: left;
+      padding: 0.45rem 0.3rem;
+      vertical-align: top;
+    }
+    .treatment-table th {
+      color: #3d3d3a;
+      font-weight: 600;
+      font-size: 0.78rem;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+    .treatment-meta {
+      margin-top: 0.65rem;
+      font-size: 0.81rem;
+      color: #44443f;
+      display: grid;
+      gap: 0.25rem;
+    }
+    .btn-row {
+      margin-top: 0.75rem;
+      display: flex;
+      justify-content: flex-start;
+    }
+    .btn-pdf {
+      text-decoration: none;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 0.42rem 0.82rem;
+      font-size: 0.82rem;
+      background: #efece3;
+      color: #1e1e1e;
+      font-weight: 600;
+    }
+
+    .cards {
+      margin-top: 1rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 0.9rem;
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--paper);
+      padding: 0.9rem;
+      display: grid;
+      gap: 0.55rem;
+      box-shadow: 0 6px 18px rgba(10, 10, 10, 0.03);
+    }
+
+    .card h3 {
+      margin: 0;
+      font-size: 0.98rem;
+      line-height: 1.25;
+      letter-spacing: 0.01em;
+    }
+
+    .card-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.8rem;
+      align-items: center;
+      font-size: 0.87rem;
+      color: #212121;
+    }
+
+    .result {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 1.1rem;
+      line-height: 1.2;
+    }
+
+    .chip {
+      padding: 0.18rem 0.46rem;
+      border-radius: 999px;
+      font-size: 0.74rem;
+      border: 1px solid transparent;
+      white-space: nowrap;
+    }
+
+    .chip.ok { color: var(--ok); border-color: color-mix(in srgb, var(--ok) 28%, white); background: #ebf8f1; }
+    .chip.high, .chip.low { color: var(--bad); border-color: color-mix(in srgb, var(--bad) 25%, white); background: #fdeeee; }
+    .chip.na { color: var(--warn); border-color: color-mix(in srgb, var(--warn) 25%, white); background: #fff7e6; }
+    .delta {
+      margin-top: -0.2rem;
+      font-size: 0.76rem;
+      color: var(--bad);
+      font-weight: 500;
+    }
+
+    .gauge {
+      margin-top: 0.1rem;
+    }
+
+    .track {
+      position: relative;
+      height: 8px;
+      border-radius: 999px;
+      background: #efebe0;
+      border: 1px solid #ded8ca;
+      overflow: hidden;
+    }
+
+    .zone {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      background: color-mix(in srgb, var(--ok) 42%, white);
+    }
+
+    .marker {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      top: -2px;
+      transform: translateX(-50%);
+      border-radius: 50%;
+      background: var(--accent);
+      border: 2px solid white;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    }
+
+    .ref {
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    .history {
+      border-top: 1px dashed var(--line);
+      padding-top: 0.4rem;
+      display: grid;
+      gap: 0.2rem;
+    }
+
+    .history-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.78rem;
+      color: #444;
+      gap: 0.6rem;
+    }
+
+    .empty {
+      border: 1px dashed var(--line);
+      padding: 1.1rem;
+      border-radius: 12px;
+      color: var(--muted);
+      background: #fbfaf5;
+    }
+
+    .footnote {
+      margin-top: 1rem;
+      color: var(--muted);
+      font-size: 0.75rem;
+      text-align: center;
+    }
+    .signature {
+      margin-top: 0.3rem;
+      color: #6b6b66;
+      font-size: 0.68rem;
+      letter-spacing: 0.03em;
+      text-align: center;
+    }
+    .signature .tm {
+      font-size: 0.52rem;
+      vertical-align: super;
+      margin-right: 0.12rem;
+      letter-spacing: 0;
+    }
+    .lab-meta {
+      margin-top: 0.55rem;
+      display: grid;
+      gap: 0.25rem;
+      font-size: 0.78rem;
+      color: #4e4d47;
+    }
+
+    @media (max-width: 760px) {
+      .hero-top, .hero-bottom { grid-template-columns: 1fr; }
+      .container { width: 100vw; margin: 0; padding: 0.6rem; }
+      .cards { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="hero" id="hero"></header>
+
+    <div class="toolbar">
+      <div class="search-wrap">
+        <input id="search" type="search" placeholder="Buscar exame (ex.: ferritina, PCR, TSH, colesterol...)" />
+        <button id="clearBtn" type="button">Limpar</button>
+      </div>
+      <div class="summary" id="summary"></div>
+    </div>
+
+    <main class="cards" id="cards"></main>
+    <section class="treatment" aria-label="Registro de prescrição">
+      <h2>Registro de Prescrição e Aplicações (Clínica)</h2>
+      <p class="treatment-sub">Resumo administrativo informado na clínica, para controle pessoal.</p>
+      <table class="treatment-table">
+        <thead>
+          <tr>
+            <th>Item informado</th>
+            <th>Valor</th>
+            <th>Regime</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Redutor de homocisteína</td>
+            <td>R$ 150,00</td>
+            <td>Aplicado na clínica</td>
+          </tr>
+          <tr>
+            <td>B12</td>
+            <td>R$ 160,00</td>
+            <td>Aplicado na clínica</td>
+          </tr>
+          <tr>
+            <td>Ácido alfa-lipoico (x2)</td>
+            <td>R$ 250,00 cada</td>
+            <td>2 aplicações</td>
+          </tr>
+          <tr>
+            <td>Testosterona de longa duração</td>
+            <td>R$ 680,00 cada</td>
+            <td>1 dose a cada 6 semanas, total 4 doses (6 meses)</td>
+          </tr>
+          <tr>
+            <td>Tirzepatida 10 UI</td>
+            <td>R$ 3.300,00</td>
+            <td>Injeção abdominal 1x/semana por 4 meses</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="treatment-meta">
+        <div><strong>Data da consulta/aplicação inicial:</strong> 03/03/2026</div>
+        <div><strong>Pagamento:</strong> cartão de crédito Santander Unique Black **3412 (Alencar Silva)</div>
+        <div><strong>Empresa recebedora:</strong> Espindola Performanc</div>
+        <div><strong>Status:</strong> itens relatados como pagos e iniciados na própria clínica.</div>
+        <div><strong>Observação:</strong> confirmar na secretaria o descritivo técnico completo (princípio ativo, concentração, lote e posologia formal).</div>
+      </div>
+      <div class="btn-row">
+        <a class="btn-pdf" href="./receita-clinica.pdf" target="_blank" rel="noopener">Abrir PDF da Receita</a>
+      </div>
+    </section>
+
+    <p class="footnote">Painel de apoio visual para leitura dos laudos laboratoriais. Não substitui avaliação médica.</p>
+    <p class="signature">Powered by <span class="tm">TM</span>AVAS 2026</p>
+  </div>
+
+  <script src="./exams-data.js"></script>
+  <script>
+    const data = window.EXAMS_DATA;
+    const cardsEl = document.getElementById("cards");
+    const searchEl = document.getElementById("search");
+    const clearBtn = document.getElementById("clearBtn");
+    const summaryEl = document.getElementById("summary");
+    const heroEl = document.getElementById("hero");
+
+    function bmi(weight, heightCm) {
+      const h = heightCm / 100;
+      return (weight / (h * h)).toFixed(1);
+    }
+
+    function toDate(raw) {
+      const [dPart, tPart = "00:00"] = raw.split(" ");
+      const [d, m, y] = dPart.split("/").map(Number);
+      const yy = y < 100 ? 2000 + y : y;
+      const [hh, mm] = tPart.split(":").map(Number);
+      return new Date(yy, m - 1, d, hh || 0, mm || 0);
+    }
+
+    function formatDate(raw) {
+      const dt = toDate(raw);
+      return dt.toLocaleDateString("pt-BR");
+    }
+
+    function normalizeText(text) {
+      return (text || "")
+        .replace(/[\u0000-\u001f\u007f-\u009f]/g, " ")
+        .replace(/\uFFFD/g, " ")
+        .replace(/mg\/dL(?=INDIRETA:|DIRETA:|TOTAL:)/g, "mg/dL ")
+        .replace(/ng\/mL(?=PSA|ALFA|BETA|GAMA|GLOBULINA|ALBUMINA)/g, "ng/mL ")
+        .replace(/pg\/mL(?=[A-ZÁÉÍÓÚÂÊÔÃÕÇ])/g, "pg/mL ")
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+
+    function formatResult(valueText) {
+      const base = normalizeText(valueText);
+      if (!base) return "Sem resultado";
+      if (base.includes("|")) {
+        return base.split("|").map(s => s.trim()).filter(Boolean).join("<br>");
+      }
+      return base;
+    }
+
+    function formatPercent(pct) {
+      return pct.toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + "%";
+    }
+
+    function outOfRangeDelta(exam) {
+      const value = exam.history?.[0]?.value;
+      const min = exam.refMin;
+      const max = exam.refMax;
+      if (typeof value !== "number") return null;
+
+      if (typeof min === "number" && value < min) {
+        const base = Math.abs(min) > 0 ? Math.abs(min) : 1;
+        return { className: "low", text: `${formatPercent(((min - value) / base) * 100)} abaixo do limite` };
+      }
+
+      if (typeof max === "number" && value > max) {
+        const base = Math.abs(max) > 0 ? Math.abs(max) : 1;
+        return { className: "high", text: `${formatPercent(((value - max) / base) * 100)} acima do limite` };
+      }
+
+      return null;
+    }
+
+    function classify(exam) {
+      const value = exam.history?.[0]?.value;
+      const min = exam.refMin;
+      const max = exam.refMax;
+      if (typeof value !== "number") return { className: "na", label: "Sem faixa" };
+      if (typeof min === "number" && value < min) return { className: "low", label: "Abaixo" };
+      if (typeof max === "number" && value > max) return { className: "high", label: "Acima" };
+      if (typeof min === "number" || typeof max === "number") return { className: "ok", label: "Na faixa" };
+      return { className: "na", label: "Sem faixa" };
+    }
+
+    function gaugeData(exam) {
+      const value = exam.history?.[0]?.value;
+      const min = exam.refMin;
+      const max = exam.refMax;
+      if (typeof value !== "number" || (typeof min !== "number" && typeof max !== "number")) return null;
+
+      let axisMin;
+      let axisMax;
+
+      if (typeof min === "number" && typeof max === "number") {
+        const span = Math.max(max - min, Math.abs(max) * 0.2, 1);
+        axisMin = min - span * 0.35;
+        axisMax = max + span * 0.35;
+      } else if (typeof max === "number") {
+        axisMin = Math.min(0, max * 0.25);
+        axisMax = max * 1.6;
+      } else {
+        axisMin = min * 0.2;
+        axisMax = min * 1.9;
+      }
+
+      if (axisMax <= axisMin) axisMax = axisMin + 1;
+
+      const pos = ((value - axisMin) / (axisMax - axisMin)) * 100;
+      const zoneStart = typeof min === "number" ? ((min - axisMin) / (axisMax - axisMin)) * 100 : 0;
+      const zoneEnd = typeof max === "number" ? ((max - axisMin) / (axisMax - axisMin)) * 100 : 100;
+
+      return {
+        pos: Math.max(0, Math.min(100, pos)),
+        zoneStart: Math.max(0, Math.min(100, zoneStart)),
+        zoneEnd: Math.max(0, Math.min(100, zoneEnd))
+      };
+    }
+
+    function renderHero() {
+      const p = data.patient;
+      const labs = (p.labs || []).join(" | ");
+      const addresses = (p.addresses || []).join(" | ");
+      heroEl.innerHTML = `
+        <div class="hero-top">
+          <div>
+            <div class="label">Nome</div>
+            <div class="name">${p.name}</div>
+          </div>
+          <div>
+            <div class="label">Data de Nascimento</div>
+            <div class="meta">${p.birthAndAge}</div>
+          </div>
+        </div>
+        <div class="hero-bottom">
+          <div>
+            <div class="label">Solicitante</div>
+            <div class="meta">${p.requester}</div>
+            <div class="lab-meta">
+              ${labs ? `<div><strong>Laboratório:</strong> ${labs}</div>` : ""}
+              ${addresses ? `<div><strong>Endereço:</strong> ${addresses}</div>` : ""}
+            </div>
+            <div class="stats">
+              <span class="pill">Sexo: ${p.sex}</span>
+              <span class="pill">Idade: ${p.age} anos</span>
+              <span class="pill">Peso: ${p.weightKg} kg</span>
+              <span class="pill">Altura: ${p.heightCm} cm</span>
+              <span class="pill">IMC: ${bmi(p.weightKg, p.heightCm)}</span>
+            </div>
+          </div>
+          <div>
+            <div class="label">Data Entrada</div>
+            <div class="meta">${p.entryDate}</div>
+            <div class="label" style="margin-top: 0.55rem;">Pedido</div>
+            <div class="meta">${p.orderId}</div>
+          </div>
+        </div>
+      `;
+    }
+
+    function makeCard(exam) {
+      const current = exam.history[0] || { valueText: exam.resultText, date: exam.collectedAt };
+      const status = classify(exam);
+      const delta = outOfRangeDelta(exam);
+      const gauge = gaugeData(exam);
+      const history = exam.history.slice(1, 8);
+      const resultHtml = formatResult(current.valueText);
+
+      const gaugeHtml = gauge ? `
+        <div class="gauge">
+          <div class="track">
+            <span class="zone" style="left:${gauge.zoneStart}%;width:${Math.max(0, gauge.zoneEnd - gauge.zoneStart)}%"></span>
+            <span class="marker" style="left:${gauge.pos}%"></span>
+          </div>
+        </div>
+      ` : "";
+
+      const historyHtml = history.length ? `
+        <div class="history">
+          ${history.map(h => `
+            <div class="history-row">
+              <span>${formatDate(h.date)}</span>
+              <span>${normalizeText(h.valueText)}</span>
+            </div>
+          `).join("")}
+        </div>
+      ` : "";
+
+      return `
+        <article class="card">
+          <h3>${exam.name}</h3>
+          <div class="card-row">
+            <span class="label" style="margin:0;">Data ${formatDate(current.date)}</span>
+            <span class="chip ${status.className}">${status.label}</span>
+          </div>
+          ${delta ? `<div class="delta">${delta.text}</div>` : ""}
+          <div class="result">${resultHtml}</div>
+          ${gaugeHtml}
+          <div class="ref">Referência: ${normalizeText(current.reference || exam.referenceText || "conforme laudo")}</div>
+          ${historyHtml}
+        </article>
+      `;
+    }
+
+    function render(query = "") {
+      const q = query.trim().toLowerCase();
+      const list = data.exams
+        .slice()
+        .sort((a, b) => a.name.localeCompare(b.name, "pt-BR", { sensitivity: "base" }))
+        .filter(exam => {
+          if (!q) return true;
+          const blob = `${exam.name} ${exam.resultText} ${exam.referenceText}`.toLowerCase();
+          return blob.includes(q);
+        });
+
+      summaryEl.textContent = `${list.length} de ${data.exams.length} exames exibidos`;
+
+      if (!list.length) {
+        cardsEl.innerHTML = `<div class="empty">Nenhum exame encontrado para "${query}".</div>`;
+        return;
+      }
+
+      cardsEl.innerHTML = list.map(makeCard).join("");
+    }
+
+    renderHero();
+    render();
+
+    searchEl.addEventListener("input", e => render(e.target.value));
+    clearBtn.addEventListener("click", () => {
+      searchEl.value = "";
+      render();
+      searchEl.focus();
+    });
+  </script>
+</body>
+</html>
